@@ -46,7 +46,8 @@ def _asset_version() -> str:
 
 # Everything brand-specific lives here so copy changes don't require touching the template.
 SITE = {
-    "brand": os.getenv("BRAND_NAME", "Quietdesk"),
+    "brand": os.getenv("BRAND_NAME", "FrontDesk AI"),
+    "company": os.getenv("COMPANY_NAME", "Zyran"),
     "demo_studio": os.getenv("DEMO_STUDIO_NAME", "Haven Yoga"),
     # Set to a Calendly/SavvyCal link to send "Book a walkthrough" there instead of the modal.
     "walkthrough_url": os.getenv("WALKTHROUGH_URL", ""),

@@ -1,7 +1,7 @@
 # wellness-ai-frontdesk
 
-AI Front Desk Agent for Wellness Studios. This is Phase 1: the public landing page (working name
-"Quietdesk"), built with FastAPI + Jinja + Tailwind (CDN) + vanilla JS and deployed on Vercel.
+AI Front Desk Agent for Wellness Studios. This is Phase 1: the public landing page for
+**FrontDesk AI by Zyran**, built with FastAPI + Jinja + Tailwind (CDN) + vanilla JS and deployed on Vercel.
 
 **Phase 1 makes no LLM or third-party API calls.** The hero's WhatsApp demo is a scripted,
 client-side simulation, so the page costs nothing to run and holds no secrets.
@@ -30,22 +30,22 @@ Open http://127.0.0.1:8000.
 
 ## Configuration (environment variables)
 
-| Variable           | Default      | Purpose                                                              |
-| ------------------ | ------------ | -------------------------------------------------------------------- |
-| `BRAND_NAME`       | `Quietdesk`  | Product name used across the page and demo                           |
-| `DEMO_STUDIO_NAME` | `Haven Yoga` | Fictional studio shown in the WhatsApp demo                          |
-| `WALKTHROUGH_URL`  | *(empty)*    | Calendly/SavvyCal link. If empty, "Book a walkthrough" opens the modal |
-| `SITE_URL`         | *(empty)*    | e.g. `https://yourdomain.com`, used for canonical and OG tags            |
+| Variable           | Default        | Purpose                                                                |
+| ------------------ | -------------- | ---------------------------------------------------------------------- |
+| `BRAND_NAME`       | `FrontDesk AI` | Product name used across the page and demo                             |
+| `COMPANY_NAME`     | `Zyran`        | Parent company, shown under the logo, in the footer and page metadata  |
+| `DEMO_STUDIO_NAME` | `Haven Yoga`   | Fictional studio shown in the WhatsApp demo                            |
+| `WALKTHROUGH_URL`  | *(empty)*      | Calendly/SavvyCal link. If empty, "Book a walkthrough" opens the modal |
+| `SITE_URL`         | *(empty)*      | Public URL (e.g. `https://<project>.vercel.app`) for canonical/OG tags |
 
 Set these in Vercel under Project → Settings → Environment Variables.
 
 ## Deploy to Vercel
 
-1. Push this folder to a GitHub repo and import it at vercel.com/new (framework preset: **Other**),
-   or install the CLI (`npm i -g vercel`), then run `vercel` for a preview and `vercel --prod` to ship.
-2. Add your domain: Project → Settings → Domains → add `yourdomain.com` (and `www`), then create the DNS
-   records Vercel shows you at your registrar. HTTPS is issued automatically.
-3. Set `SITE_URL` to the final domain.
+The project is imported from GitHub at vercel.com/new (framework preset: **Other**; `vercel.json`
+handles the build). Every push to `main` redeploys production automatically, and other branches get
+preview URLs. The site is served on its free `*.vercel.app` address; a custom domain can be added later
+under Project → Settings → Domains.
 
 `/static/*` is served by Vercel's CDN with long-lived caching. Asset URLs carry a content hash
 (`?v=...`, computed in `main.py`), so each deploy busts browser caches automatically.

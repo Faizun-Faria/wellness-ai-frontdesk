@@ -22,7 +22,9 @@
   const root = document.querySelector("[data-chat-demo]");
   if (!root) return;
 
-  const BRAND = root.dataset.brand || "Quietdesk";
+  const BRAND = root.dataset.brand || "FrontDesk AI";
+  // Label on AI-sent bubbles; avoids "FrontDesk AI AI" when the brand already says AI.
+  const AI_LABEL = /\bAI\b/.test(BRAND) ? BRAND : `${BRAND} AI`;
   const STUDIO = root.dataset.studio || "Haven Yoga";
   const REDUCED_MOTION = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   const AUTO_ADVANCE_DELAY = 6500;
@@ -306,7 +308,7 @@
     const row = newRow(side);
     let bubble = "";
     if (quote) bubble += `<div class="wa-quote"><b>You</b><span>${escapeHtml(quote)}</span></div>`;
-    if (side === "out") bubble += `<span class="wa-ai-tag">${ICONS.sparkle}${escapeHtml(BRAND)} AI</span>`;
+    if (side === "out") bubble += `<span class="wa-ai-tag">${ICONS.sparkle}${escapeHtml(AI_LABEL)}</span>`;
     if (link) {
       bubble += `<div class="wa-link"><span class="wa-link-thumb">${ICONS.ticket}</span><span class="wa-link-copy"><span class="wa-link-title">${escapeHtml(fill(link.title))}</span><span class="wa-link-sub">${escapeHtml(fill(link.sub))}</span></span></div>`;
     }
