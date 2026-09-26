@@ -1,0 +1,670 @@
+{#- Walkthrough CTA: external scheduler link if WALKTHROUGH_URL is set, otherwise the lead modal. -#}
+{% macro walkthrough(cls, label="Book a walkthrough") -%}
+  {%- if site.walkthrough_url -%}
+    <a href="{{ site.walkthrough_url }}" target="_blank" rel="noopener" class="{{ cls }}">{{ label }}</a>
+  {%- else -%}
+    <button type="button" data-open-modal="walkthrough" class="{{ cls }}">{{ label }}</button>
+  {%- endif -%}
+{%- endmacro -%}
+{% macro arrow() -%}
+  <svg class="arrow" width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+{%- endmacro -%}
+{% macro logo(size=30) -%}
+  <svg width="{{ size }}" height="{{ size }}" viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="15" fill="#171513"/><path d="M10.5 19.5a5.5 5.5 0 0 1 11 0Z" fill="#d65f2e"/><path d="M7.5 19.5h17" stroke="#f6f3ee" stroke-width="1.8" stroke-linecap="round"/><path d="M11 23h10" stroke="#f6f3ee" stroke-width="1.8" stroke-linecap="round" opacity=".45"/></svg>
+{%- endmacro -%}
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{ site.brand }} · The AI front desk for boutique wellness studios</title>
+  <meta name="description" content="{{ site.brand }} answers every WhatsApp message for your yoga, pilates or wellness studio in seconds: booking classes, enforcing your cancellation policy and syncing with your studio software, 24/7.">
+  <meta name="theme-color" content="#f6f3ee">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="{{ site.brand }} · Never miss a booking while you're teaching">
+  <meta property="og:description" content="The AI front desk for boutique wellness studios. Bookings, cancellations and membership questions handled on WhatsApp, 24/7.">
+  {% if site.url %}
+  <link rel="canonical" href="{{ site.url }}/">
+  <meta property="og:url" content="{{ site.url }}/">
+  {% endif %}
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="/static/img/favicon.svg" type="image/svg+xml">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Inter+Tight:wght@400;500;600&family=Newsreader:opsz,wght@6..72,400;6..72,500&display=swap">
+  <link rel="stylesheet" href="/static/css/site.css?v={{ site.asset_version }}">
+
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <style type="text/tailwindcss">
+    @theme {
+      --color-cream: #f6f3ee;
+      --color-sand: #efeae2;
+      --color-ink: #171513;
+      --color-ink-soft: #3a3530;
+      --color-muted: #756e66;
+      --color-line: #e5dfd5;
+      --color-clay: #d65f2e;
+      --color-clay-deep: #a8481f;
+      --font-sans: "Inter Tight", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+      --font-serif: "Newsreader", ui-serif, Georgia, "Times New Roman", serif;
+      --font-mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    }
+  </style>
+
+  <script src="/static/js/simulated-chat.js?v={{ site.asset_version }}" defer></script>
+  <script src="/static/js/app.js?v={{ site.asset_version }}" defer></script>
+</head>
+<body class="bg-white font-sans text-ink antialiased">
+  <a href="#main" class="skip-link">Skip to content</a>
+
+  <!-- ============ Nav ============ -->
+  <header class="site-nav sticky top-0 z-40 bg-white/95 backdrop-blur" data-nav>
+    <div class="shell flex h-16 items-center justify-between gap-4 lg:h-[84px]">
+      <a href="/" class="flex items-center gap-2.5" aria-label="{{ site.brand }} home">
+        {{ logo(30) }}
+        <span class="text-[23px] font-semibold tracking-[-0.045em]">{{ site.brand }}</span>
+      </a>
+      <nav class="hidden items-center gap-9 text-[16px] text-ink-soft lg:flex" aria-label="Primary">
+        <a href="#features" class="link-underline hover:text-ink">Features</a>
+        <a href="#controls" class="link-underline hover:text-ink">Controls</a>
+        <a href="#roi" class="link-underline hover:text-ink">ROI calculator</a>
+        <a href="#how" class="link-underline hover:text-ink">How it works</a>
+      </nav>
+      <div class="flex items-center gap-5">
+        {{ walkthrough("link-underline hidden text-[16px] md:inline cursor-pointer") }}
+        <button type="button" data-open-modal="demo" class="btn btn-primary">
+          <span class="sm:hidden">Try demo</span><span class="hidden sm:inline">Try 1-hour demo</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main id="main">
+    <!-- ============ Hero ============ -->
+    <section class="marks relative bg-cream">
+      <div class="shell grid items-center gap-12 pb-20 pt-12 sm:pt-16 lg:grid-cols-12 lg:gap-10 lg:pb-28 lg:pt-20">
+        <div class="lg:col-span-5">
+          <p class="eyebrow">AI front desk for wellness studios</p>
+          <h1 class="display mt-6 text-[46px] sm:text-[64px] lg:text-[56px] xl:text-[74px]">Never miss a booking while you're teaching.</h1>
+          <p class="mt-7 max-w-xl font-serif text-[19px] leading-[1.55] text-ink-soft sm:text-[21px]">
+            {{ site.brand }} is the AI receptionist for boutique yoga, pilates and wellness studios. It answers every WhatsApp message in seconds: booking classes, handling cancellations by your rules and keeping your studio software in sync.
+          </p>
+          <div class="mt-9 flex flex-col gap-3 sm:flex-row lg:flex-col xl:flex-row">
+            <button type="button" data-open-modal="demo" class="btn btn-primary btn-lg">Try interactive 1-hour demo {{ arrow() }}</button>
+            {{ walkthrough("btn btn-outline btn-lg") }}
+          </div>
+          <p class="mono-label mt-4 text-[11.5px] text-muted">Free · No credit card · Private sandbox</p>
+          <ul class="mt-10 space-y-3 border-t border-line pt-7">
+            <li class="mono-label flex items-center gap-3 text-[12.5px]"><span class="sq"></span>Replies in seconds, 24/7</li>
+            <li class="mono-label flex items-center gap-3 text-[12.5px]"><span class="sq"></span>Syncs with Mindbody &amp; studio software</li>
+            <li class="mono-label flex items-center gap-3 text-[12.5px]"><span class="sq"></span>Your policies, enforced kindly</li>
+          </ul>
+        </div>
+
+        <!-- Simulated WhatsApp Business demo (static/js/simulated-chat.js) -->
+        <div class="min-w-0 lg:col-span-7" id="demo">
+          <div class="demo-stage" data-chat-demo data-brand="{{ site.brand }}" data-studio="{{ site.demo_studio }}">
+            <div class="demo-controls">
+              <div class="demo-tabs" role="tablist" aria-label="Demo scenarios">
+                {% for short, label in [("Late cancel", "Late cancellation"), ("Booking", "Class booking"), ("FAQ", "Membership FAQ")] %}
+                <button type="button" class="demo-tab" role="tab" id="scenario-tab-{{ loop.index0 }}" aria-controls="wa-frame" aria-selected="{{ 'true' if loop.first else 'false' }}" tabindex="{{ 0 if loop.first else -1 }}" data-scenario="{{ loop.index0 }}">
+                  <span class="sm:hidden">{{ short }}</span><span class="hidden sm:inline">{{ label }}</span><span class="demo-tab-progress" aria-hidden="true"><span></span></span>
+                </button>
+                {% endfor %}
+              </div>
+              <div class="flex flex-none gap-1.5">
+                <button type="button" class="demo-icon-btn" data-chat-toggle aria-label="Pause demo" aria-pressed="false">
+                  <span data-icon-pause><svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><rect x="3" y="2.5" width="2.6" height="9" rx="1" fill="currentColor"/><rect x="8.4" y="2.5" width="2.6" height="9" rx="1" fill="currentColor"/></svg></span>
+                  <span data-icon-play hidden><svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="M4 2.6v8.8a.6.6 0 0 0 .9.5l7-4.4a.6.6 0 0 0 0-1L4.9 2.1a.6.6 0 0 0-.9.5Z" fill="currentColor"/></svg></span>
+                </button>
+                <button type="button" class="demo-icon-btn hidden sm:grid" data-chat-replay aria-label="Replay scenario">
+                  <svg width="15" height="15" viewBox="0 0 16 16" aria-hidden="true"><path d="M2.5 8a5.5 5.5 0 1 0 1.7-4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><path d="M3.5 1.5v3h3" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </button>
+              </div>
+            </div>
+
+            <div class="wa-frame" id="wa-frame" role="tabpanel" aria-label="Simulated WhatsApp conversation handled by the {{ site.brand }} AI">
+              <div class="wa-chrome">
+                <span class="wa-dots" aria-hidden="true"><i></i><i></i><i></i></span>
+                <span class="wa-chrome-title">
+                  <svg width="14" height="14" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 1.5a6.5 6.5 0 0 0-5.6 9.8L1.5 14.5l3.3-.9A6.5 6.5 0 1 0 8 1.5Z" fill="currentColor"/></svg>
+                  <span class="wa-chrome-text"><span class="wa-chrome-product">WhatsApp Business · </span>{{ site.demo_studio }}</span>
+                </span>
+                <span class="wa-clock" aria-label="Simulated local time"><span data-wa-clock-icon></span><span data-wa-day>Fri</span><span data-wa-time>9:18 PM</span></span>
+              </div>
+              <div class="wa-body">
+                <div class="wa-chat">
+                  <div class="wa-header">
+                    <div class="wa-avatar" data-wa-avatar aria-hidden="true">PS</div>
+                    <div class="min-w-0 flex-1">
+                      <div class="wa-name" data-wa-name>Priya S.</div>
+                      <div class="wa-status" data-wa-status>online</div>
+                    </div>
+                    <div class="wa-header-icons" aria-hidden="true">
+                      <svg width="19" height="19" viewBox="0 0 20 20"><circle cx="8.5" cy="8.5" r="5.5" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="m13 13 4 4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+                      <svg width="19" height="19" viewBox="0 0 20 20"><circle cx="10" cy="4.5" r="1.6" fill="currentColor"/><circle cx="10" cy="10" r="1.6" fill="currentColor"/><circle cx="10" cy="15.5" r="1.6" fill="currentColor"/></svg>
+                    </div>
+                  </div>
+                  <div class="wa-messages" data-wa-messages><div class="wa-date">Today</div></div>
+                  <div class="wa-composer" aria-hidden="true">
+                    <span class="wa-ai-pill"><span class="pulse-dot"></span>AI on</span>
+                    <span class="wa-input">{{ site.brand }} is replying for you…</span>
+                    <span class="wa-takeover">Take over</span>
+                  </div>
+                </div>
+                <aside class="wa-drawer" aria-label="Agent activity">
+                  <div class="wa-drawer-head"><span>Agent activity</span><span class="wa-live"><span class="pulse-dot"></span>Live</span></div>
+                  <div class="wa-contact">
+                    <div class="wa-avatar" data-wa-contact-avatar aria-hidden="true">PS</div>
+                    <div class="min-w-0">
+                      <div class="wa-c-name" data-wa-contact-name>Priya S.</div>
+                      <div class="wa-c-tag" data-wa-contact-tag>Member · 10-class pack</div>
+                    </div>
+                  </div>
+                  <div class="wa-chips" data-wa-contact-chips></div>
+                  <ol class="wa-log" data-wa-log></ol>
+                  <div class="wa-resolution" data-wa-resolution></div>
+                </aside>
+              </div>
+            </div>
+            <p class="demo-caption">Scripted preview · Try the live AI in the 1-hour demo</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ Practices marquee ============ -->
+    {% set practices = ["Yoga", "Pilates", "Reformer", "Barre", "Hot yoga", "Meditation", "Breathwork", "Sound healing", "Aerial", "Mobility"] %}
+    <section class="marks bg-white py-16 sm:py-20" aria-labelledby="practices-label">
+      <p id="practices-label" class="mono-label text-center text-[12.5px]">Made for boutique studios of every practice</p>
+      <div class="marquee mt-9">
+        <div class="marquee-track">
+          <div class="flex">{% for p in practices %}<span class="marquee-item">{{ p }}</span>{% endfor %}</div>
+          <div class="flex" aria-hidden="true">{% for p in practices %}<span class="marquee-item">{{ p }}</span>{% endfor %}</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ Features ============ -->
+    {% set features = [
+      {"title": "24/7 front desk coverage",
+       "body": "Every WhatsApp message gets a warm, accurate reply in seconds: at 5am, mid-class or on a Sunday night. No more leads going cold while you're on the mat."},
+      {"title": "Instant Mindbody & studio software sync",
+       "body": "Live schedules, capacity, waitlists and member credits come straight from your studio software, and bookings write back automatically. No double entry, no double bookings."},
+      {"title": "Smart policy enforcement",
+       "body": "Your cancellation window, late fees, freezes and intro offers, applied consistently and kindly every time. Anything sensitive is handed to you with the full conversation."}
+    ] %}
+    <section id="features" class="marks bg-cream">
+      <div class="shell py-24 lg:py-32">
+        <p class="eyebrow">What it handles</p>
+        <div class="mt-6 grid gap-8 lg:grid-cols-12 lg:items-end">
+          <h2 class="display text-[42px] sm:text-[60px] lg:col-span-7 xl:text-[76px]">Every message answered. Every rule respected.</h2>
+          <p class="max-w-xl font-serif text-[19px] leading-[1.55] text-ink-soft sm:text-[21px] lg:col-span-5">
+            {{ site.brand }} works like your best front-desk hire. It knows your schedule, your members and your policies, and it never takes a day off. You set the rules; it keeps them.
+          </p>
+        </div>
+
+        <div class="mt-16 grid border border-line bg-white lg:grid-cols-12" data-feature-tabs>
+          <div class="feature-stage min-h-[440px] lg:col-span-7 lg:min-h-[600px]">
+            <!-- Panel 1: overnight inbox -->
+            {% set volume = [1, 0, 0, 0, 0, 2, 4, 5, 3, 2, 2, 3, 6, 4, 2, 2, 3, 5, 6, 5, 3, 4, 2, 1] %}
+            {% set teaching = [6, 7, 12, 17, 18, 19] %}
+            {% set inbox = [
+              {"time": "5:41 AM", "name": "Aisha K.", "msg": "Is the 6:30 hot class still on?", "status": "Answered", "chip": "chip-sky"},
+              {"time": "7:02 AM", "name": "Tom B.", "msg": "Can I bring a friend on Saturday?", "status": "Guest pass sent", "chip": ""},
+              {"time": "12:14 PM", "name": "Marcus T.", "msg": "Any beginner classes this week?", "status": "Booked", "chip": "chip-sage"},
+              {"time": "6:48 PM", "name": "Jess L.", "msg": "Running 5 min late, save my spot!", "status": "Teacher notified", "chip": ""},
+              {"time": "9:18 PM", "name": "Priya S.", "msg": "Can I cancel tomorrow's 7am?", "status": "Rescheduled", "chip": "chip-sage"},
+              {"time": "10:52 PM", "name": "Elena R.", "msg": "Can I freeze my membership?", "status": "Frozen", "chip": "chip-sky"}
+            ] %}
+            <div class="feature-panel is-active" id="feature-panel-0" role="tabpanel" aria-labelledby="feature-tab-0">
+              <div class="mock">
+                <div class="mock-head">
+                  <div><div class="mock-title">Inbox · last 24 hours</div><div class="mock-sub">WhatsApp · {{ site.demo_studio }}</div></div>
+                  <span class="chip chip-sage">0 missed</span>
+                </div>
+                <div class="border-b border-[#eeeae3] px-4 pb-3 pt-4">
+                  <div class="flex h-16 items-end gap-[3px]" aria-hidden="true">
+                    {% for v in volume %}<span class="bar{% if loop.index0 in teaching %} bar-teach{% endif %}" style="height: {{ (v / 6 * 100) | round | int }}%"></span>{% endfor %}
+                  </div>
+                  <div class="mt-1.5 flex justify-between font-mono text-[10px] text-muted" aria-hidden="true"><span>12 AM</span><span>6 AM</span><span>12 PM</span><span>6 PM</span><span>11 PM</span></div>
+                  <div class="mt-3 flex flex-wrap gap-x-4 gap-y-1 text-[11.5px] text-muted">
+                    <span class="flex items-center gap-1.5"><span class="sq"></span>Messages while you're teaching</span>
+                    <span class="flex items-center gap-1.5"><span class="sq bg-ink/15"></span>Other hours</span>
+                  </div>
+                </div>
+                <ul class="divide-y divide-[#f0ece6]">
+                  {% for row in inbox %}
+                  <li class="flex items-center gap-3 px-4 py-2.5">
+                    <span class="w-[62px] flex-none font-mono text-[11px] text-muted">{{ row.time }}</span>
+                    <span class="min-w-0 flex-1">
+                      <span class="block text-[12.5px] font-medium">{{ row.name }}</span>
+                      <span class="block truncate text-[12px] text-muted">{{ row.msg }}</span>
+                    </span>
+                    <span class="chip {{ row.chip }}">{{ row.status }}</span>
+                  </li>
+                  {% endfor %}
+                </ul>
+              </div>
+            </div>
+
+            <!-- Panel 2: live schedule sync -->
+            {% set classes = [
+              {"time": "7:00 AM", "name": "Sunrise Vinyasa", "teacher": "Maya", "booked": 20, "cap": 20, "status": "Waitlist 3", "chip": "chip-clay"},
+              {"time": "9:30 AM", "name": "Reformer Basics", "teacher": "Lena", "booked": 8, "cap": 10, "status": "2 spots", "chip": ""},
+              {"time": "12:00 PM", "name": "Power Flow", "teacher": "Sam", "booked": 16, "cap": 18, "status": "2 spots", "chip": ""},
+              {"time": "6:00 PM", "name": "Slow Flow", "teacher": "Jonah", "booked": 14, "cap": 18, "status": "4 spots", "chip": ""},
+              {"time": "7:30 PM", "name": "Yin & Restore", "teacher": "Maya", "booked": 17, "cap": 18, "status": "1 spot", "chip": "chip-clay"}
+            ] %}
+            <div class="feature-panel" id="feature-panel-1" role="tabpanel" aria-labelledby="feature-tab-1">
+              <div class="w-full max-w-[540px] space-y-3">
+                <div class="mock">
+                  <div class="mock-head">
+                    <div><div class="mock-title">Today's schedule</div><div class="mock-sub">Saturday · {{ site.demo_studio }}</div></div>
+                    <span class="chip chip-sage"><span class="pulse-dot"></span>Synced 2s ago</span>
+                  </div>
+                  <ul class="divide-y divide-[#f0ece6]">
+                    {% for c in classes %}
+                    <li class="grid grid-cols-[62px_minmax(0,1fr)_auto] items-center gap-3 px-4 py-3">
+                      <span class="font-mono text-[11px] text-muted">{{ c.time }}</span>
+                      <span class="min-w-0">
+                        <span class="block text-[13px] font-medium">{{ c.name }}</span>
+                        <span class="block text-[11.5px] text-muted">with {{ c.teacher }} · {{ c.booked }}/{{ c.cap }} booked</span>
+                        <span class="capacity mt-1.5 block max-w-[220px]"><span style="width: {{ (c.booked / c.cap * 100) | round | int }}%"></span></span>
+                      </span>
+                      <span class="chip {{ c.chip }}">{{ c.status }}</span>
+                    </li>
+                    {% endfor %}
+                  </ul>
+                </div>
+                <div class="mock flex items-center gap-3 px-4 py-3">
+                  <span class="grid h-9 w-9 flex-none place-items-center rounded-full bg-[#c8643b] text-[12px] font-semibold text-white" aria-hidden="true">PS</span>
+                  <div class="min-w-0 flex-1">
+                    <div class="text-[13px] font-medium">Priya S. · 10-class pack</div>
+                    <div class="truncate text-[12px] text-muted">4 credits left · moved to Yin &amp; Restore</div>
+                  </div>
+                  <span class="chip chip-sage">Credit check ✓</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Panel 3: studio rules -->
+            {% set rules = [
+              ("Cancellation window", "12 hours"),
+              ("Late cancellation", "Uses class credit"),
+              ("No-show fee", "$15"),
+              ("Membership freeze", "1–8 weeks · no fee"),
+              ("Hand off to staff", "Refunds · injuries · complaints")
+            ] %}
+            <div class="feature-panel" id="feature-panel-2" role="tabpanel" aria-labelledby="feature-tab-2">
+              <div class="mock">
+                <div class="mock-head">
+                  <div><div class="mock-title">Studio rules</div><div class="mock-sub">Applied to every conversation</div></div>
+                  <span class="chip">6 active</span>
+                </div>
+                <ul class="divide-y divide-[#f0ece6] text-[13px]">
+                  {% for label, value in rules[:2] %}
+                  <li class="flex items-center justify-between gap-4 px-4 py-3"><span>{{ label }}</span><span class="kbd-val">{{ value }}</span></li>
+                  {% endfor %}
+                  <li class="flex items-center justify-between gap-4 px-4 py-3"><span>Allow class swaps inside window</span><span class="toggle" role="img" aria-label="On"></span></li>
+                  {% for label, value in rules[2:] %}
+                  <li class="flex items-center justify-between gap-4 px-4 py-3"><span>{{ label }}</span><span class="kbd-val truncate">{{ value }}</span></li>
+                  {% endfor %}
+                </ul>
+                <div class="m-3 rounded-lg bg-cream p-3.5">
+                  <div class="mono-label text-[10.5px] text-muted">Live check</div>
+                  <div class="mt-2 flex flex-wrap items-center gap-x-2 gap-y-2 text-[12.5px]">
+                    <span>Cancel request 9:18 PM</span><span class="text-muted">→</span>
+                    <span>Class 7:00 AM</span><span class="text-muted">→</span>
+                    <span class="chip chip-clay">9h 42m · late</span><span class="text-muted">→</span>
+                    <span class="chip chip-sage">Swap offered · credit kept</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="flex flex-col border-t border-line lg:col-span-5 lg:border-l lg:border-t-0" role="tablist" aria-orientation="vertical" aria-label="Capabilities">
+            {% for f in features %}
+            <button type="button" class="feature-tab" role="tab" id="feature-tab-{{ loop.index0 }}" aria-controls="feature-panel-{{ loop.index0 }}" aria-selected="{{ 'true' if loop.first else 'false' }}" tabindex="{{ 0 if loop.first else -1 }}">
+              <span class="feature-progress" aria-hidden="true"><span></span></span>
+              <span class="sq"></span>
+              <span>
+                <span class="feature-tab-title">{{ f.title }}</span>
+                <span class="feature-tab-body">{{ f.body }}</span>
+              </span>
+            </button>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ Control & guardrails ============ -->
+    {% set sched_days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"] %}
+    {% set threads = [
+      {"initials": "PS", "color": "#c8643b", "name": "Priya S.", "msg": "Can I swap to the 7:30 Yin instead?", "mode": "ai"},
+      {"initials": "MT", "color": "#3f6f8f", "name": "Marcus T.", "msg": "Do I need to bring my own mat?", "mode": "ai"},
+      {"initials": "AK", "color": "#8a6a9e", "name": "Aisha K.", "msg": "I think I was charged twice this month", "mode": "staff"},
+      {"initials": "TB", "color": "#5e7f69", "name": "Tom B.", "msg": "Can my friend use my guest pass?", "mode": "ai"}
+    ] %}
+    <section id="controls" class="marks bg-white">
+      <div class="shell py-24 lg:py-32">
+        <p class="eyebrow">Control &amp; guardrails</p>
+        <div class="mt-6 grid gap-8 lg:grid-cols-12 lg:items-end">
+          <h2 class="display text-[42px] sm:text-[60px] lg:col-span-7 xl:text-[76px]"><span class="display-muted">Full front-desk control.</span> Guardrails built in.</h2>
+          <p class="max-w-xl font-serif text-[19px] leading-[1.55] text-ink-soft sm:text-[21px] lg:col-span-5">
+            You decide when the AI answers, how long your team gets to reply first, and when a person takes over. It's still your front desk, now with a teammate who never misses a shift.
+          </p>
+        </div>
+
+        <div class="mt-16 grid gap-5 lg:grid-cols-12">
+          <!-- 01 · Smart fallback timer -->
+          <article class="control-card marks-sm lg:col-span-5" data-fallback data-fallback-default="3">
+            <div>
+              <span class="font-mono text-[13px] text-clay">01</span>
+              <h3 class="control-title mt-6">Smart fallback timer</h3>
+              <p class="control-body">Your team always gets the first reply. If nobody answers within the window you set, the AI steps in, so no student is left on read.</p>
+            </div>
+            <div class="mock mt-auto max-w-none">
+              <div class="mock-head">
+                <div><div class="mock-title">Fallback to AI</div><div class="mock-sub">During staffed hours</div></div>
+                <span class="chip chip-sage">On</span>
+              </div>
+              <div class="px-4 pb-5 pt-5">
+                <p class="flex flex-wrap items-center gap-x-2.5 gap-y-2 text-[14px] leading-relaxed">
+                  <span>Wait</span>
+                  <span class="stepper">
+                    <button type="button" data-fallback-step="-1" aria-label="Wait one minute less">−</button>
+                    <output data-fallback-value aria-live="polite">3 min</output>
+                    <button type="button" data-fallback-step="1" aria-label="Wait one minute more">+</button>
+                  </span>
+                  <span>for staff to reply before the AI takes over.</span>
+                </p>
+                <div class="fb-line mt-7" aria-hidden="true"><span class="fb-dot fb-start"></span><span class="fb-bar"><span class="fb-fill"></span></span><span class="fb-dot fb-end"></span></div>
+                <div class="mt-3 grid grid-cols-3 gap-2 text-[11.5px] leading-snug">
+                  <div><div class="font-mono text-muted">2:41 PM</div><div class="mt-0.5 font-medium">New message</div></div>
+                  <div class="text-center"><div class="font-mono text-muted" data-fallback-window>3 min</div><div class="mt-0.5 font-medium">Staff can reply</div></div>
+                  <div class="text-right"><div class="font-mono text-muted" data-fallback-end>2:44 PM</div><div class="mt-0.5 font-medium">AI takes over</div></div>
+                </div>
+              </div>
+              <ul class="divide-y divide-[#f0ece6] border-t border-[#eeeae3] text-[13px]">
+                <li class="flex items-center justify-between gap-4 px-4 py-3"><span>Reply instantly outside staffed hours</span><span class="toggle" role="img" aria-label="On"></span></li>
+                <li class="flex items-center justify-between gap-4 px-4 py-3"><span>Stay quiet once a teammate replies</span><span class="toggle" role="img" aria-label="On"></span></li>
+              </ul>
+            </div>
+          </article>
+
+          <!-- 02 · Operating schedule -->
+          <article class="control-card marks-sm lg:col-span-7" data-schedule>
+            <div>
+              <span class="font-mono text-[13px] text-clay">02</span>
+              <h3 class="control-title mt-6">Operating schedule</h3>
+              <p class="control-body">Choose exactly when the AI covers the front desk: early mornings, peak class times, late nights. Your team handles everything else.</p>
+            </div>
+            <div class="mock mt-auto max-w-none">
+              <div class="mock-head">
+                <div><div class="mock-title">AI active hours</div><div class="mock-sub">WhatsApp · {{ site.demo_studio }}</div></div>
+                <span class="chip chip-sage" data-sched-summary>122 h / week</span>
+              </div>
+              <div class="px-4 pb-4 pt-4">
+                <div class="flex flex-wrap gap-1.5" role="group" aria-label="Schedule presets">
+                  <button type="button" class="preset" data-preset="peak" aria-pressed="true">Peak classes + after hours</button>
+                  <button type="button" class="preset" data-preset="after" aria-pressed="false">After hours only</button>
+                  <button type="button" class="preset" data-preset="always" aria-pressed="false">24/7</button>
+                </div>
+                <div class="sched mt-5" data-sched-grid role="img" aria-label="Weekly grid of the hours the AI answers WhatsApp">
+                  {% for day in sched_days %}
+                  {% set d = loop.index0 %}
+                  <span class="sched-day">{{ day }}</span>
+                  <span class="sched-row">{% for h in range(24) %}<span class="sched-cell" data-d="{{ d }}" data-h="{{ h }}"></span>{% endfor %}</span>
+                  {% endfor %}
+                </div>
+                <div class="sched-hours" aria-hidden="true"><span>12a</span><span>6a</span><span>12p</span><span>6p</span><span>12a</span></div>
+                <div class="mt-4 flex flex-wrap items-center justify-between gap-3 text-[11.5px] text-muted">
+                  <span class="flex items-center gap-4">
+                    <span class="flex items-center gap-1.5"><span class="swatch bg-ink"></span>AI front desk</span>
+                    <span class="flex items-center gap-1.5"><span class="swatch bg-[#ece7df]"></span>Your team</span>
+                  </span>
+                  <span class="font-mono uppercase tracking-[0.06em]" aria-hidden="true">Tap or drag to edit</span>
+                </div>
+                <p class="sr-only" aria-live="polite" data-sched-detail></p>
+              </div>
+            </div>
+          </article>
+
+          <!-- 03 · Human override & master switch -->
+          <article class="control-card marks-sm lg:col-span-12" data-override data-master="on">
+            <div class="grid gap-8 lg:grid-cols-12 lg:gap-12">
+              <div class="flex min-w-0 flex-col gap-7 lg:col-span-5">
+                <div>
+                  <span class="font-mono text-[13px] text-clay">03</span>
+                  <h3 class="control-title mt-6">Human override &amp; master switch</h3>
+                  <p class="control-body">Pause the AI for the whole studio in one tap, or jump into any live WhatsApp thread. The moment a teammate takes over, the AI steps back.</p>
+                </div>
+                <div class="mock mt-auto max-w-none">
+                  <div class="flex items-center justify-between gap-4 px-5 py-5">
+                    <div class="min-w-0">
+                      <div id="master-label" class="text-[15px] font-semibold">AI front desk</div>
+                      <div class="when-on"><div class="mt-1 flex items-center gap-2 text-[13px] text-[#245e43]"><span class="pulse-dot"></span>On · following your schedule</div></div>
+                      <div class="when-off"><div class="mt-1 flex items-center gap-2 text-[13px] text-clay-deep"><span class="sq"></span>Paused · every chat goes to your team</div></div>
+                    </div>
+                    <button type="button" class="switch" role="switch" aria-checked="true" aria-labelledby="master-label" data-master-switch></button>
+                  </div>
+                  <div class="border-t border-[#eeeae3] px-5 py-3 text-[12px] text-muted" data-master-audit>Last changed by Maya · today, 8:02 AM</div>
+                </div>
+              </div>
+              <div class="min-w-0 lg:col-span-7">
+                <div class="mock h-full max-w-none">
+                  <div class="mock-head">
+                    <div><div class="mock-title">Live WhatsApp chats</div><div class="mock-sub" data-thread-summary>AI handling 3 · Team handling 1</div></div>
+                    <span class="chip">{{ threads | length }} open</span>
+                  </div>
+                  <ul class="divide-y divide-[#f0ece6]">
+                    {% for t in threads %}
+                    <li class="thread flex items-center gap-3 px-4 py-3.5" data-thread data-mode="{{ t.mode }}">
+                      <span class="grid h-9 w-9 flex-none place-items-center rounded-full text-[12px] font-semibold text-white" style="background: {{ t.color }}" aria-hidden="true">{{ t.initials }}</span>
+                      <span class="min-w-0 flex-1">
+                        <span class="flex flex-wrap items-center gap-x-2 gap-y-1">
+                          <span class="text-[13px] font-medium">{{ t.name }}</span>
+                          <span class="chip chip-sage thread-st st-ai"><span class="pulse-dot"></span>AI replying</span>
+                          <span class="chip chip-clay thread-st st-wait">Waiting for team</span>
+                          <span class="chip chip-ink thread-st st-staff">You're in</span>
+                        </span>
+                        <span class="mt-0.5 block truncate text-[12px] text-muted">{{ t.msg }}</span>
+                      </span>
+                      <button type="button" class="thread-btn" data-thread-toggle>
+                        <span class="lbl-take">Take over</span><span class="lbl-back">Hand back</span><span class="sr-only"> chat with {{ t.name }}</span>
+                      </button>
+                    </li>
+                    {% endfor %}
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ ROI ============ -->
+    {% set sliders = [
+      {"name": "missed", "label": "Messages you can't answer quickly", "hint": "During classes, after hours and on weekends", "min": 5, "max": 150, "step": 1, "value": 30, "display": "30 / week"},
+      {"name": "rate", "label": "Share that would book with a fast reply", "hint": "New students, drop-ins and class changes", "min": 5, "max": 60, "step": 1, "value": 20, "display": "20%"},
+      {"name": "value", "label": "Average value of a booking", "hint": "Intro offer, class pack or drop-in", "min": 15, "max": 300, "step": 5, "value": 45, "display": "$45"},
+      {"name": "hours", "label": "Hours you spend on messages", "hint": "Replying, rescheduling and chasing policies", "min": 1, "max": 30, "step": 1, "value": 8, "display": "8 h / week"}
+    ] %}
+    <section id="roi" class="marks bg-cream">
+      <div class="shell py-24 lg:py-32">
+        <p class="eyebrow">The math</p>
+        <h2 class="display mt-6 max-w-5xl text-[42px] sm:text-[60px] xl:text-[76px]"><span class="display-muted">Every unanswered message</span> is a class someone didn't book.</h2>
+        <p class="mono-label mt-8 text-[12.5px]">Estimate what a 24/7 front desk is worth to your studio</p>
+
+        <div class="mt-12 grid gap-5 lg:grid-cols-2" data-roi data-currency="USD">
+          <div class="marks-sm bg-white px-7 py-12 sm:px-12 sm:py-14">
+            <h3 class="text-[28px] tracking-[-0.03em]">Your studio</h3>
+            <div class="mt-9 space-y-9">
+              {% for s in sliders %}
+              <div>
+                <div class="flex items-baseline justify-between gap-4">
+                  <label for="roi-{{ s.name }}" class="text-[16px]">{{ s.label }}</label>
+                  <output for="roi-{{ s.name }}" class="flex-none font-mono text-[14px]" data-roi-display="{{ s.name }}">{{ s.display }}</output>
+                </div>
+                <p class="mt-1 text-[13.5px] text-muted">{{ s.hint }}</p>
+                <input id="roi-{{ s.name }}" name="{{ s.name }}" class="range mt-4" type="range" min="{{ s.min }}" max="{{ s.max }}" step="{{ s.step }}" value="{{ s.value }}">
+              </div>
+              {% endfor %}
+            </div>
+          </div>
+
+          <div class="marks-sm flex flex-col bg-white px-7 py-12 sm:px-12 sm:py-14">
+            <h3 class="text-[28px] tracking-[-0.03em]">What {{ site.brand }} could recover</h3>
+            <div class="mt-9 flex flex-wrap items-start gap-x-6 gap-y-6">
+              <div>
+                <div class="display text-[60px] tabular-nums sm:text-[84px]" data-roi-out="revenue">$1,169</div>
+                <div class="mt-3 text-[16px]">in bookings each month</div>
+              </div>
+              <div class="hidden pt-5 text-[40px] font-light text-muted sm:block" aria-hidden="true">+</div>
+              <div>
+                <div class="display text-[60px] tabular-nums sm:text-[84px]" data-roi-out="hours">24h</div>
+                <div class="mt-3 text-[16px]">of admin time back each month</div>
+              </div>
+            </div>
+            <p class="mt-8 text-[15.5px] text-muted">
+              About <span class="text-ink" data-roi-out="bookings">26</span> extra bookings a month, or <span class="text-ink" data-roi-out="annual">$14,029</span> a year.
+            </p>
+            <div class="mt-auto flex flex-col gap-3 pt-10 sm:flex-row">
+              <button type="button" data-open-modal="demo" class="btn btn-primary btn-lg">Try interactive 1-hour demo</button>
+              {{ walkthrough("btn btn-outline btn-lg") }}
+            </div>
+            <p class="mt-5 text-[12.5px] leading-relaxed text-muted">Estimate only, based on your inputs. Uses 4.33 weeks per month and assumes about 70% of routine message handling is automated.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ How it works ============ -->
+    {% set steps = [
+      ("Connect your studio", "Link Mindbody or your booking platform and your WhatsApp Business number. Your schedule, members and pricing stay in sync on their own."),
+      ("Teach it your rules", "Set your cancellation window, freeze policy, intro offers and tone of voice. It follows them to the letter, and kindly."),
+      ("Go live, stay in control", "It answers around the clock while you teach. Every conversation lands in one inbox, and you can take over any chat with one tap.")
+    ] %}
+    <section id="how" class="marks bg-white">
+      <div class="shell py-24 lg:py-32">
+        <p class="eyebrow">How it works</p>
+        <h2 class="display mt-6 max-w-4xl text-[42px] sm:text-[60px] xl:text-[76px]">Set it up once. Covered around the clock.</h2>
+        <ol class="mt-16 grid gap-px overflow-hidden border border-line bg-line md:grid-cols-3">
+          {% for title, body in steps %}
+          <li class="marks-sm bg-white px-7 pb-10 pt-12 lg:px-10 lg:pb-12 lg:pt-14">
+            <span class="font-mono text-[13px] text-clay">0{{ loop.index }}</span>
+            <h3 class="mt-10 text-[26px] leading-tight tracking-[-0.03em]">{{ title }}</h3>
+            <p class="mt-3 font-serif text-[18px] leading-relaxed text-muted">{{ body }}</p>
+          </li>
+          {% endfor %}
+        </ol>
+      </div>
+    </section>
+
+    <!-- ============ Final CTA ============ -->
+    {% set perks = [
+      ("A private sandbox", "Your own AI front desk, trained on a sample studio's schedule and policies."),
+      ("60 minutes, on us", "No credit card, no setup and nothing to install."),
+      ("Real questions, real answers", "Late cancellations, bookings, freezes, pricing. See exactly how it responds.")
+    ] %}
+    <section class="bg-ink text-cream">
+      <div class="shell grid gap-14 py-24 lg:grid-cols-12 lg:items-end lg:py-32">
+        <div class="lg:col-span-7">
+          <p class="eyebrow text-cream">Try it yourself</p>
+          <h2 class="display mt-6 text-[46px] sm:text-[66px] xl:text-[84px]">Give your front desk the night off.</h2>
+          <p class="mt-7 max-w-xl font-serif text-[19px] leading-[1.55] text-cream/75 sm:text-[21px]">
+            Spin up a private AI front desk and throw your trickiest student questions at it. It's yours for an hour.
+          </p>
+          <div class="mt-10 flex flex-col gap-3 sm:flex-row">
+            <button type="button" data-open-modal="demo" class="btn btn-light btn-lg">Try interactive 1-hour demo {{ arrow() }}</button>
+            {{ walkthrough("btn btn-ghost-light btn-lg") }}
+          </div>
+        </div>
+        <ul class="space-y-7 border-t border-cream/15 pt-10 lg:col-span-5 lg:border-l lg:border-t-0 lg:pl-12 lg:pt-0">
+          {% for title, body in perks %}
+          <li class="flex gap-4">
+            <span class="sq mt-2.5"></span>
+            <div>
+              <div class="text-[20px] tracking-[-0.02em]">{{ title }}</div>
+              <div class="mt-1 text-[16px] leading-relaxed text-cream/60">{{ body }}</div>
+            </div>
+          </li>
+          {% endfor %}
+        </ul>
+      </div>
+    </section>
+  </main>
+
+  <!-- ============ Footer ============ -->
+  <footer class="bg-white">
+    <div class="shell flex flex-col gap-6 py-10 md:flex-row md:items-center md:justify-between">
+      <nav class="flex flex-wrap gap-x-9 gap-y-3 text-[17px] text-muted" aria-label="Footer">
+        <a href="/" class="link-underline hover:text-ink">Home</a>
+        {# TODO: point these at real pages before launch. #}
+        <a href="#" class="link-underline hover:text-ink">Terms</a>
+        <a href="#" class="link-underline hover:text-ink">Privacy</a>
+        <a href="#" class="link-underline hover:text-ink">Security</a>
+      </nav>
+      <p class="flex items-center gap-2.5 text-[14px] text-muted">{{ logo(20) }} © {{ site.year }} {{ site.brand }}. For studios that would rather be teaching.</p>
+    </div>
+  </footer>
+
+  <!-- ============ Registration modal ============ -->
+  <dialog id="demo-modal" class="modal" aria-labelledby="modal-title" aria-describedby="modal-sub">
+    <div class="relative px-6 pb-8 pt-9 sm:px-9">
+      <button type="button" class="absolute right-3 top-3 grid h-10 w-10 place-items-center rounded-full text-muted transition-colors hover:bg-cream hover:text-ink" data-close-modal aria-label="Close">
+        <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="m3.5 3.5 9 9m0-9-9 9" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+      </button>
+
+      <div data-view="form">
+        <p class="eyebrow text-[11.5px]">Free · 60 minutes</p>
+        <h2 id="modal-title" class="mt-4 pr-8 text-[30px] leading-[1.05] tracking-[-0.035em]" data-modal-title>Try the interactive 1-hour demo</h2>
+        <p id="modal-sub" class="mt-3 font-serif text-[17px] leading-relaxed text-muted" data-modal-sub>Get a private AI front desk trained on a sample studio and throw your trickiest student questions at it. We'll email your access link.</p>
+
+        <form class="mt-7 space-y-4" action="/api/register-demo" method="post" novalidate>
+          <input type="hidden" name="intent" value="demo">
+          <div class="hp" aria-hidden="true">
+            <label>Website <input type="text" name="website" tabindex="-1" autocomplete="off"></label>
+          </div>
+          <div>
+            <label for="f-name" class="mb-1.5 block text-[14px] font-medium">Your name</label>
+            <input id="f-name" name="name" class="input" type="text" autocomplete="name" required maxlength="120" placeholder="Jordan Lee" aria-describedby="err-name" autofocus>
+            <p id="err-name" class="field-error" data-error-for="name" hidden></p>
+          </div>
+          <div>
+            <label for="f-studio" class="mb-1.5 block text-[14px] font-medium">Studio name</label>
+            <input id="f-studio" name="studio_name" class="input" type="text" autocomplete="organization" required maxlength="160" placeholder="Lotus Room Yoga" aria-describedby="err-studio">
+            <p id="err-studio" class="field-error" data-error-for="studio_name" hidden></p>
+          </div>
+          <div>
+            <label for="f-email" class="mb-1.5 block text-[14px] font-medium">Work email</label>
+            <input id="f-email" name="email" class="input" type="email" inputmode="email" autocomplete="email" required maxlength="254" placeholder="you@yourstudio.com" aria-describedby="err-email">
+            <p id="err-email" class="field-error" data-error-for="email" hidden></p>
+          </div>
+          <p class="field-error" data-form-error role="alert" hidden></p>
+          <button type="submit" class="btn btn-primary btn-lg w-full">
+            <span class="spinner" data-submit-spinner hidden></span><span data-submit-label>Get my demo link</span>
+          </button>
+          <p class="text-center text-[12.5px] text-muted">No credit card. We'll only email you about your demo.</p>
+        </form>
+      </div>
+
+      <div data-view="success" class="py-4 text-center" hidden>
+        <div class="mx-auto grid h-14 w-14 place-items-center rounded-full bg-[#e1efe6] text-[#2f7a55]">
+          <svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 12.5 4 4 8-9" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <h2 class="mt-6 text-[30px] tracking-[-0.035em]" data-success-title>You're in!</h2>
+        <p class="mx-auto mt-3 max-w-sm font-serif text-[17px] leading-relaxed text-muted" data-success-body></p>
+        <p class="mt-3 font-mono text-[12px] text-muted" data-success-email></p>
+        <button type="button" class="btn btn-outline mt-8" data-close-modal>Back to the site</button>
+      </div>
+    </div>
+  </dialog>
+</body>
+</html>

@@ -1,0 +1,12 @@
+# Secrets and local environment
+.env*
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# Tooling
+.vercel
+.claude/
