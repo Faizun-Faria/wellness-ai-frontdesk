@@ -1,7 +1,7 @@
-# Quietdesk landing page (Phase 1)
+# wellness-ai-frontdesk
 
-Public landing page for the AI front-desk receptionist for boutique wellness studios.
-FastAPI + Jinja + Tailwind (CDN) + vanilla JS, deployed on Vercel.
+AI Front Desk Agent for Wellness Studios. This is Phase 1: the public landing page (working name
+"Quietdesk"), built with FastAPI + Jinja + Tailwind (CDN) + vanilla JS and deployed on Vercel.
 
 **Phase 1 makes no LLM or third-party API calls.** The hero's WhatsApp demo is a scripted,
 client-side simulation, so the page costs nothing to run and holds no secrets.
@@ -10,7 +10,7 @@ client-side simulation, so the page costs nothing to run and holds no secrets.
 
 ```
 main.py                     FastAPI app: page, /api/register-demo placeholder, security headers
-templates/index.html        The whole page (hero, practices strip, features, how it works, ROI, CTA, modal)
+templates/index.html        The whole page (hero, practices strip, features, controls, ROI, how it works, CTA, modal)
 static/js/simulated-chat.js WhatsApp-style demo engine + the three scenario scripts
 static/js/app.js            Nav, registration modal, feature tabs, ROI calculator
 static/css/site.css         Design tokens and component styles (Tailwind handles layout utilities)
